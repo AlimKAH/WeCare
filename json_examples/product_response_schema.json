@@ -1,0 +1,53 @@
+{
+  "product": {
+    "id": "",
+    "barcode": "",
+    "name": "",
+    "manufacturer": "",
+    "weight": {
+      "value": 0,
+      "unit": ""
+    },
+    "ingredients": [
+      {
+        "name": "",
+        "safety": ""
+      }
+    ],
+    "nutrition": {
+      "calories": 0,
+      "protein": 0,
+      "fat": {
+        "total": 0,
+        "saturated": 0
+      },
+      "carbohydrates": {
+        "total": 0,
+        "sugar": 0
+      },
+      "fiber": 0,
+      "salt": 0,
+      "sodium": 0
+    },
+    "score": {
+      "total": 0,
+      "category": "",
+      "nutrition_score": 0,
+      "additives_score": 0
+    },
+    "additives": [""],
+    "image_url": ""
+  },
+  "allergens_analysis": {
+    "detected_allergens": [""],
+    "user_allergens_present": [""]
+  },
+  "diet_compatibility": [
+    {
+      "diet": "",
+      "compatible": false,
+      "reason": ""
+    }
+  ],
+  "scan_timestamp": ""
+} 

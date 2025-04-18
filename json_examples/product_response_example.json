@@ -1,0 +1,117 @@
+{
+  "product": {
+    "id": "0737628064502",
+    "barcode": "0737628064502",
+    "name": "Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning",
+    "manufacturer": "Simply Asia Foods, Inc.",
+    "weight": {
+      "value": 155,
+      "unit": "g"
+    },
+    "ingredients": [
+      {
+        "name": "Rice Noodles (rice, water)",
+        "safety": "safe"
+      },
+      {
+        "name": "peanut",
+        "safety": "safe"
+      },
+      {
+        "name": "sugar",
+        "safety": "suspicious"
+      },
+      {
+        "name": "salt",
+        "safety": "safe"
+      },
+      {
+        "name": "corn starch",
+        "safety": "safe"
+      },
+      {
+        "name": "spices (chili, cinnamon, pepper, cumin, clove)",
+        "safety": "safe"
+      },
+      {
+        "name": "hydrolyzed soy protein",
+        "safety": "suspicious"
+      },
+      {
+        "name": "green onions",
+        "safety": "safe"
+      },
+      {
+        "name": "citric acid",
+        "safety": "safe"
+      },
+      {
+        "name": "peanut oil",
+        "safety": "safe"
+      },
+      {
+        "name": "sesame oil",
+        "safety": "safe"
+      },
+      {
+        "name": "natural flavor",
+        "safety": "suspicious"
+      }
+    ],
+    "nutrition": {
+      "calories": 385,
+      "protein": 9.62,
+      "fat": {
+        "total": 7.69,
+        "saturated": 1.92
+      },
+      "carbohydrates": {
+        "total": 71.15,
+        "sugar": 13.46
+      },
+      "fiber": 1.9,
+      "salt": 0.72,
+      "sodium": 0.288
+    },
+    "score": {
+      "total": 83,
+      "category": "Excellent",
+      "nutrition_score": 51,
+      "additives_score": 32
+    },
+    "additives": ["E330 (citric acid)"],
+    "image_url": "https://images.openfoodfacts.org/images/products/073/762/806/4502/front_en.6.400.jpg"
+  },
+  "allergens_analysis": {
+    "detected_allergens": ["peanuts", "sesame", "soybeans"],
+    "user_allergens_present": ["peanuts"]
+  },
+  "diet_compatibility": [
+    {
+      "diet": "Vegetarian",
+      "compatible": true,
+      "reason": "Contains no meat, fish, or animal-derived ingredients"
+    },
+    {
+      "diet": "Vegan",
+      "compatible": true,
+      "reason": "Contains no animal-derived ingredients"
+    },
+    {
+      "diet": "Gluten-Free",
+      "compatible": true,
+      "reason": "Made with rice noodles and contains no gluten-containing ingredients"
+    },
+    {
+      "diet": "Keto",
+      "compatible": false,
+      "reason": "High carbohydrate content (71.15g per 100g) makes this unsuitable for ketogenic diets"
+    },
+    {
+      "diet": "Low-Sugar",
+      "compatible": false,
+      "reason": "Contains 13.46g of sugar per 100g, which is considered high"
+    }
+  ],
+  "scan_timestamp": "2024-07-05T14:32:19Z"
+} 
