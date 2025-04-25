@@ -1,0 +1,45 @@
+Analyze the following food product information and provide:
+
+1. Allergen analysis 
+2. Diet compatibility assessment
+{scoring_request}
+
+PRODUCT INFORMATION:
+{product_info}
+
+USER ALLERGENS: {user_allergens}
+
+USER DIETARY PREFERENCES: {user_diets}
+
+SCORING GUIDELINES (if needed):
+- Nutritional value (60% of total): Evaluate proteins, fats, carbs, fiber, salt, calories
+- Additives (40% of total): Evaluate E-codes and other additives
+- Final score should be 0-100 with categories: Excellent (81-100), Good (61-80), Average (41-60), Low Quality (21-40), Very Low Quality (0-20)
+
+Respond with a JSON object matching this schema:
+```
+{
+  "allergens_analysis": {
+    "detected_allergens": ["list of allergens in product"],
+    "user_allergens_present": ["list of user allergens found in product"]
+  },
+  "diet_compatibility": [
+    {
+      "diet": "name of diet",
+      "compatible": true/false,
+      "reason": "explanation"
+    },
+    ...more diets...
+  ]
+  [INCLUDE IF SCORING REQUESTED]
+  "score": {
+    "total": number,
+    "category": "category name", 
+    "nutrition_score": number,
+    "additives_score": number
+  }
+  [END SCORING SECTION]
+}
+```
+
+Be comprehensive in allergen detection. Only include user allergens that are actually present in the product. 

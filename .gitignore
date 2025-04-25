@@ -177,3 +177,5 @@ cython_debug/
 # Custom
 ТЗ WeCare.md
 737628064502.json
+swagger_info.txt
+.vscode

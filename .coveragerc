@@ -1,0 +1,16 @@
+[run]
+source = wecare
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+    raise ImportError
+
+omit =
+    */tests/*
+    wecare/example.py
+    wecare/utils/logger.py 
