@@ -7,6 +7,7 @@ import os
 import sys
 import argparse
 from typing import Dict, Any, Optional
+import datetime
 
 from wecare.utils.logger import setup_logging, get_logger
 from wecare.services.ai_service.product_analyzer import ProductAnalyzer
@@ -247,6 +248,97 @@ def parse_args():
     return parser.parse_args()
 
 
+def save_results_as_json(analysis, product_data, output_dir="results"):
+    """Save analysis results as JSON according to the schema."""
+    # Create results directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        logger.info(f"Created results directory: {output_dir}")
+    
+    # Extract product additives with safety classifications
+    additives = analysis.product.additives or []
+    ingredients = []
+    
+    safe_additives = [] if not product_data else product_data.get("safe_additives", [])
+    suspicious_additives = [] if not product_data else product_data.get("suspicious_additives", [])
+    harmful_additives = [] if not product_data else product_data.get("harmful_additives", [])
+    
+    for additive in additives:
+        safety = "safe"
+        if additive in harmful_additives:
+            safety = "harmful"
+        elif additive in suspicious_additives:
+            safety = "suspicious"
+        
+        ingredients.append({
+            "name": additive,
+            "safety": safety
+        })
+    
+    # Build the result JSON
+    result = {
+        "product": {
+            "id": getattr(analysis.product, "id", "") or product_data.get("code", ""),
+            "barcode": getattr(analysis.product, "barcode", "") or product_data.get("code", ""),
+            "name": getattr(analysis.product, "name", "") or product_data.get("product", {}).get("product_name", "Unknown"),
+            "manufacturer": getattr(analysis.product, "manufacturer", "") or product_data.get("product", {}).get("brands", "Unknown"),
+            "weight": {
+                "value": getattr(analysis.product.weight, "value", 0) if hasattr(analysis.product, "weight") else 0,
+                "unit": getattr(analysis.product.weight, "unit", "g") if hasattr(analysis.product, "weight") else "g"
+            },
+            "ingredients": ingredients,
+            "nutrition": {
+                "calories": getattr(analysis.product.nutrition, "calories", 0) if hasattr(analysis.product, "nutrition") else 0,
+                "protein": getattr(analysis.product.nutrition, "protein", 0) if hasattr(analysis.product, "nutrition") else 0,
+                "fat": {
+                    "total": getattr(analysis.product.nutrition.fat, "total", 0) if hasattr(analysis.product, "nutrition") and hasattr(analysis.product.nutrition, "fat") else 0,
+                    "saturated": getattr(analysis.product.nutrition.fat, "saturated", 0) if hasattr(analysis.product, "nutrition") and hasattr(analysis.product.nutrition, "fat") else 0
+                },
+                "carbohydrates": {
+                    "total": getattr(analysis.product.nutrition.carbohydrates, "total", 0) if hasattr(analysis.product, "nutrition") and hasattr(analysis.product.nutrition, "carbohydrates") else 0,
+                    "sugar": getattr(analysis.product.nutrition.carbohydrates, "sugar", 0) if hasattr(analysis.product, "nutrition") and hasattr(analysis.product.nutrition, "carbohydrates") else 0
+                },
+                "fiber": getattr(analysis.product.nutrition, "fiber", 0) if hasattr(analysis.product, "nutrition") else 0,
+                "salt": getattr(analysis.product.nutrition, "salt", 0) if hasattr(analysis.product, "nutrition") else 0,
+                "sodium": getattr(analysis.product.nutrition, "sodium", 0) if hasattr(analysis.product, "nutrition") else 0
+            },
+            "score": {
+                "total": getattr(analysis.product.score, "total", 0) if hasattr(analysis.product, "score") else 0,
+                "category": getattr(analysis.product.score, "category", "") if hasattr(analysis.product, "score") else "",
+                "nutrition_score": getattr(analysis.product.score, "nutrition_score", 0) if hasattr(analysis.product, "score") else 0,
+                "additives_score": getattr(analysis.product.score, "additives_score", 0) if hasattr(analysis.product, "score") else 0
+            },
+            "additives": additives,
+            "image_url": getattr(analysis.product, "image_url", "") or product_data.get("product", {}).get("image_url", "")
+        },
+        "allergens_analysis": {
+            "detected_allergens": analysis.allergens_analysis.detected_allergens if hasattr(analysis, "allergens_analysis") and hasattr(analysis.allergens_analysis, "detected_allergens") else [],
+            "user_allergens_present": analysis.allergens_analysis.user_allergens_present if hasattr(analysis, "allergens_analysis") and hasattr(analysis.allergens_analysis, "user_allergens_present") else []
+        },
+        "diet_compatibility": [
+            {
+                "diet": diet.diet,
+                "compatible": diet.compatible,
+                "reason": diet.reason
+            }
+            for diet in analysis.diet_compatibility
+        ],
+        "scan_timestamp": datetime.datetime.now().isoformat()
+    }
+    
+    # Generate filename based on barcode or a fallback
+    barcode = result["product"]["barcode"] or "unknown_product"
+    filename = f"{barcode}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    file_path = os.path.join(output_dir, filename)
+    
+    # Save the JSON file
+    with open(file_path, 'w') as f:
+        json.dump(result, f, indent=2)
+    
+    logger.info(f"Saved analysis results to: {file_path}")
+    return file_path
+
+
 def main():
     """Run the main application pipeline."""
     try:
@@ -313,6 +405,10 @@ def main():
         
         # Display results
         display_results(result, scoring_method_used, product_data)
+        
+        # Save results as JSON
+        json_path = save_results_as_json(result, product_data)
+        print(f"\nAnalysis results saved to: {json_path}")
         
         return 0
     except Exception as e:
