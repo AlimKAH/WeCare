@@ -1,0 +1,11 @@
+[project]
+name = "wecare"
+version = "0.1.0"
+description = "Food analysis app"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.75.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+]
